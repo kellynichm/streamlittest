@@ -160,7 +160,7 @@ with st.container():
 
 
     uploaded_file = st.file_uploader("Choose a file", type='pdf')
-     if uploaded_file:
+    if uploaded_file:
         st.markdown("<h3 style='text-align: center; color: blue;'>Generator Model Response</h3>", unsafe_allow_html=True)
         with st.spinner('Custom PaLM model is working to generate, wait.....'):
             pdf_text = extract_text_from_pdf(uploaded_file)
