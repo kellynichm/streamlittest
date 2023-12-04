@@ -164,27 +164,13 @@ with st.container():
         st.markdown("<h3 style='text-align: center; color: blue;'>Generator Model Response</h3>", unsafe_allow_html=True)
         with st.spinner('Custom PaLM model is working to generate, wait.....'):
             pdf_text = extract_text_from_pdf(uploaded_file)
-            prompt = 
+            prompt = prompt_template.format(text=text)
             response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
                             max_output_tokens = st.session_state['token_limit'],
                             top_p = st.session_state['top_p'],
                             top_k = st.session_state['top_k'])
             st.session_state['response'].append(response)
-            st.markdown(response)
-
-
-            response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
-                                max_output_tokens = st.session_state['token_limit'],
-                                top_p = st.session_state['top_p'],
-                                top_k = st.session_state['top_k'])
-            st.session_state['response'].append(response)
-            st.markdown(response)
-
-
-
-
-
-
+            st.markdown(response)            
     #prompt = st.text_area("Add your prompt: ",height = 100)
     #if prompt:
     #    st.session_state['prompt'].append(prompt)
