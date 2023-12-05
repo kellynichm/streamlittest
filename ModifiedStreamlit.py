@@ -171,7 +171,7 @@ with st.container():
         with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
             text = ""
             for page in doc:
-                text += page.getText()
+                text += page.get_text()
             st.write(text) 
     #doc = fitz.open("pdf",uploaded_file)
     #text =""
