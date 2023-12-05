@@ -5,3 +5,4 @@ streamlit-chat
 PyMuPDF
 fitz
 PyPDF2
+frontend
