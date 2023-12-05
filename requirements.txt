@@ -6,3 +6,4 @@ PyMuPDF
 PyPDF2
 frontend
 pdfminer
+pdfminer.six

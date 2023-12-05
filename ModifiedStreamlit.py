@@ -10,6 +10,7 @@ import base64
 import streamlit as st
 from PIL import Image
 import pdfminer
+import pdfminer.high_level
 #from src.utils import * - rmoved as everythign is now in the single file 
 #from src.vertex import * - removed as everything is now in the single file
 
