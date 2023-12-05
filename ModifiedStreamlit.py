@@ -172,7 +172,7 @@ with st.container():
             text = ""
             for page in doc:
                 text += page.get_text()
-            st.write(text) 
+            #st.write(text) 
     #doc = fitz.open("pdf",uploaded_file)
     #text =""
     #for page_num in range (doc.page_count):
