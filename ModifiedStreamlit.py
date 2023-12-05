@@ -70,7 +70,7 @@ def get_text_generation(prompt="",  **parameters):
 #main app function#
 
 st.set_page_config(
-    page_title="Custom-Trained PALM Contract Summarizer"
+    page_title="Custom-Trained PALM Contract Summarizer",
     page_icon=":robot:",
     layout="centered",
     initial_sidebar_state="expanded",
