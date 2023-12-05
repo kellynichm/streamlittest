@@ -114,8 +114,8 @@ with st.sidebar:
 
 #defining extract text
 
-def extract_text_from_pdf(pdf_path):
-    doc = fitz.open(pdf_path)
+def extract_text_from_pdf(uploaded_file):
+    doc = fitz.open(uploaded_file)
     text = ""
     for page_num in range(doc.page_count):
         page = doc[page_num]
@@ -160,12 +160,12 @@ with st.container():
     if uploaded_file:
         st.markdown("<h3 style='text-align: center; color: red;'>Generator Model Response</h3>", unsafe_allow_html=True)
         with st.spinner('Custom PaLM model is working to generate, wait.....'):
-            doc = fitz.open("pdf",uploaded_file)
-            text =""
-            for page_num in range (doc.page_count):
-                page = doc[page_num]
-                text += page.get_text()
-            #text = extract_text_from_pdf(uploaded_file)
+            #doc = fitz.open("pdf",uploaded_file)
+            #text =""
+            #for page_num in range (doc.page_count):
+            #    page = doc[page_num]
+            #    text += page.get_text()
+            text = extract_text_from_pdf(uploaded_file)
             #exception handling for length needed
             prompt = prompt_template.format(text=text)
             response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
