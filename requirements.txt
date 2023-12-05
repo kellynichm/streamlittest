@@ -5,3 +5,4 @@ streamlit-chat
 PyMuPDF
 PyPDF2
 frontend
+pdfminer

@@ -9,6 +9,7 @@ import io
 import base64
 import streamlit as st
 from PIL import Image
+import pdfminer
 #from src.utils import * - rmoved as everythign is now in the single file 
 #from src.vertex import * - removed as everything is now in the single file
 
@@ -114,12 +115,18 @@ with st.sidebar:
 
 #defining extract text
 
+#def extract_text_from_pdf(uploaded_file):
+#   doc = fitz.open(uploaded_file)
+#    text = ""
+#    for page_num in range(doc.page_count):
+#        page = doc[page_num]
+#        text += page.get_text()
+#    return text
+
 def extract_text_from_pdf(uploaded_file):
-    doc = fitz.open(uploaded_file)
     text = ""
-    for page_num in range(doc.page_count):
-        page = doc[page_num]
-        text += page.get_text()
+    for page in pdfminer.high_level.extract_pages(uploaded_file):
+            text += pdfminer.high_level.extract_text(page)
     return text
 
 #defining prompt template
@@ -160,12 +167,12 @@ with st.container():
     if uploaded_file:
         st.markdown("<h3 style='text-align: center; color: red;'>Generator Model Response</h3>", unsafe_allow_html=True)
         with st.spinner('Custom PaLM model is working to generate, wait.....'):
-            doc = fitz.open("pdf",uploaded_file)
-            text =""
-            for page_num in range (doc.page_count):
-                page = doc[page_num]
-                text += page.get_text()
-            #text = extract_text_from_pdf(uploaded_file)
+            #doc = fitz.open("pdf",uploaded_file)
+            #text =""
+            #for page_num in range (doc.page_count):
+            #    page = doc[page_num]
+            #    text += page.get_text()
+            text = extract_text_from_pdf(uploaded_file)
             #exception handling for length needed
             prompt = prompt_template.format(text=text)
             response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
