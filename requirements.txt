@@ -3,6 +3,5 @@ google-cloud-logging
 streamlit
 streamlit-chat
 PyMuPDF
-fitz
 PyPDF2
 frontend
