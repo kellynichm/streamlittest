@@ -67,7 +67,7 @@ def get_text_generation(prompt="",  **parameters):
                                         )
     return response.text
 
-#main app function
+#main app function#
 
 st.set_page_config(
     page_title="Custom-Trained PALM Contract Summarizer"
