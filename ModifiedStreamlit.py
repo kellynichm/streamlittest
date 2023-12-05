@@ -84,13 +84,12 @@ create_session_state()
 
 image = Image.open('./image/palm.jpg')
 st.image(image)
-st.title(":red[PaLM 2] :blue[Vertex AI] Text Generation")
+st.title(":red[ASL Team 2] PaLM 2 Contract Summarizer Demo")
 
 with st.sidebar:
     image = Image.open('./image/sidebar_image.jpg')
     st.image(image)
     st.markdown("<h2 style='text-align: center; color: red;'>Setting Tab</h2>", unsafe_allow_html=True)
-
 
     st.write("Model Settings:")
 
@@ -159,9 +158,14 @@ with st.container():
 
     uploaded_file = st.file_uploader("Choose a file", type='pdf')
     if uploaded_file:
-        st.markdown("<h3 style='text-align: center; color: blue;'>Generator Model Response</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; color: red;'>Generator Model Response</h3>", unsafe_allow_html=True)
         with st.spinner('Custom PaLM model is working to generate, wait.....'):
-            text = extract_text_from_pdf(uploaded_file)
+            doc = fitz.open("pdf",uploaded_file)
+            text =""
+            for page_num in range (doc.page_count):
+                page = doc[page_num]
+                text += page.get_text()
+            #text = extract_text_from_pdf(uploaded_file)
             #exception handling for length needed
             prompt = prompt_template.format(text=text)
             response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
