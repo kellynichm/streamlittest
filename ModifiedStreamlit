@@ -9,8 +9,8 @@ import io
 import base64
 import streamlit as st
 from PIL import Image
-#from src.utils import *
-#from src.vertex import *
+#from src.utils import * - rmoved as everythign is now in the single file 
+#from src.vertex import * - removed as everything is now in the single file
 
 #imports from the utils.py
 import streamlit as st
@@ -70,7 +70,7 @@ def get_text_generation(prompt="",  **parameters):
 #main app function
 
 st.set_page_config(
-    page_title="Custom-Trained PALM Contract Summarizer,
+    page_title="Custom-Trained PALM Contract Summarizer"
     page_icon=":robot:",
     layout="centered",
     initial_sidebar_state="expanded",
@@ -125,29 +125,27 @@ def extract_text_from_pdf(pdf_path):
 
 #defining prompt template
 prompt_template = """
-    You are an experienced, detail-oriented lawyer in a corporate legal department.
-    The following is the text from a sales contract:
-    <begin contract text>     
-         ```{text}```
-    <end contract text>
-    Attentively extract the following information from the contract text and present it to me:
  
-		01) vendor company name
-		02) vendor signatory name
-		03) vendor signatory job title
-		04) customer company name
-		05) customer signatory name
-		06) customer signatory job title
-		07) begin date of the contract
-		08) end date of the contract
-		09) each contract line item (each to include [product description], [product quantity], [product price, with currency if specified], and [charge periodicity (one-time, daily, weekly, monthly, annual, etc.)] for each line item)
-		10) each charge not included in the line items (including currency if specified)
-		11) each contract term pertaining to contract cancellation and/or contract renewal (especially automatic renewal)
-		12) each contract term pertaining to billing and/or payment
+You are a lawyer in a corporate legal department.
+Consider the following contract:
+<begin contract text>     
+```{text}```
+<end contract text>
  
+FIRST, you must create a one-sentence summary of the contract.
  
-    If you can't find an item I requested, just say "N/A".
-    Do not present redundant information.
+SECOND, you must list the following specific information from the contract:
+	1) the begin date of the contract
+	2) the end date of the contract
+	3) the names the human signatories to the contract
+THIRD, If this contract is a sales contract, then you must also attentively extract the following additional specific information from the contract:
+	1) vendor company name
+	2) customer company name
+	3) each contract term that pertains to contract cancellation and/or contract renewal (especially automatic renewal)
+	4) each contract term that pertains to billing and/or payment
+	5) each contract line item (each to include [product description], [product quantity], [product price, with currency if specified], and [charge periodicity (one-time, daily, weekly, monthly, annual, etc.)] for each line item)
+	6) each charge not included in the line items (including currency if specified)
+ 
 """
 
 with st.container():
@@ -164,13 +162,17 @@ with st.container():
         st.markdown("<h3 style='text-align: center; color: blue;'>Generator Model Response</h3>", unsafe_allow_html=True)
         with st.spinner('Custom PaLM model is working to generate, wait.....'):
             pdf_text = extract_text_from_pdf(uploaded_file)
+            #exception handling for length needed
             prompt = prompt_template.format(text=text)
             response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
                             max_output_tokens = st.session_state['token_limit'],
                             top_p = st.session_state['top_p'],
                             top_k = st.session_state['top_k'])
             st.session_state['response'].append(response)
-            st.markdown(response)            
+            st.markdown(response) 
+
+
+
     #prompt = st.text_area("Add your prompt: ",height = 100)
     #if prompt:
     #    st.session_state['prompt'].append(prompt)
