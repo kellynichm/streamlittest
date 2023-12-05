@@ -116,7 +116,7 @@ with st.sidebar:
 #defining extract text
 
 def extract_text_from_pdf(pdf_path):
-    doc = fitz.open("pdf",pdf_path)
+    doc = fitz.open(pdf_path)
     text = ""
     for page_num in range(doc.page_count):
         page = doc[page_num]
