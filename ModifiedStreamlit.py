@@ -72,35 +72,35 @@ def get_text_generation(prompt="",  **parameters):
 #main app function#
 
 st.set_page_config(
-    page_title="Custom-Trained PALM Contract Summarizer",
+    page_title="ASL Team 2 Custom PaLM Contract Summarizer",
     page_icon=":robot:",
     layout="centered",
     initial_sidebar_state="expanded",
     menu_items={
-        'About': "# This app uses a version of the Vertex PaLM mode, fine-tuned on the Atticus Project Contract Understanding Atticus Dataset, to summarize contracts submitted as PDFs."
+        'About': "# This app uses a version of the Vertex PaLM model, fine-tuned on the Atticus Project Contract Understanding Atticus Dataset, to summarize contracts submitted as PDFs."
     }
 )
 
 #creating session states
 create_session_state()
 
-image = Image.open('./image/palm.jpg')
+image = Image.open('./image/FairBanner.png')
 st.image(image)
 st.title(":red[ASL Team 2] PaLM 2 Contract Summarizer Demo")
 
 with st.sidebar:
-    image = Image.open('./image/sidebar_image.jpg')
+    image = Image.open('./image/FairTab.png')
     st.image(image)
-    st.markdown("<h2 style='text-align: center; color: red;'>Setting Tab</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color: red;'>Output Controls</h2>", unsafe_allow_html=True)
 
-    st.write("Model Settings:")
+    st.write("Settings:")
 
     #define the temeperature for the model
-    temperature_value = st.slider('Temperature :', 0.0, 1.0, 0.0)
+    temperature_value = st.slider('Temperature (Output variability) :', 0.0, 1.0, 0.0)
     st.session_state['temperature'] = temperature_value
 
     #define the temeperature for the model
-    token_limit_value = st.slider('Token limit :', 1, 1024, 1024)
+    token_limit_value = st.slider('Max output length :', 1, 1024, 1024)
     st.session_state['token_limit'] = token_limit_value
 
     #define the temeperature for the model
@@ -156,9 +156,9 @@ THIRD, If this contract is a sales contract, then you must also attentively extr
 """
 
 with st.container():
-    st.write("Current Generator Settings: ")
+    st.write("Current Output Settings: ")
     # if st.session_state['temperature'] or st.session_state['debug_mode'] or :
-    st.write ("Temperature: ",st.session_state['temperature']," \t \t Token limit: ",st.session_state['token_limit']
+    st.write ("Temperature: ",st.session_state['temperature']," \t \t Max length: ",st.session_state['token_limit']
                 ," \t \t Top-K: ",st.session_state['top_k']
                 ," \t \t Top-P: ",st.session_state['top_p']
                 ," \t \t Debug Model: ",st.session_state['debug_mode'])
@@ -167,33 +167,33 @@ with st.container():
     uploaded_file = st.file_uploader("Choose a file", type='pdf')
     if uploaded_file:
         st.balloons()
-        st.markdown("<h3 style='text-align: center; color: red;'>Generator Model Response</h3>", unsafe_allow_html=True)
-        #with st.spinner('Custom PaLM model is working to generate, wait.....'):
-        with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
-            text = ""
-            for page in doc:
-                text += page.get_text()
-            #st.write(text) 
-    #doc = fitz.open("pdf",uploaded_file)
-    #text =""
-    #for page_num in range (doc.page_count):
-    #    page = doc[page_num]
-    #    text += page.get_text()
-    #text = extract_text_from_pdf(uploaded_file)
-    #exception handling for length needed
-            
-            prompt = prompt_template.format(text=text)
-            if len(prompt) >= 300000:
-                st.markdown("<h3 style='text-align: center; color: red;'>Document exceeds maximum token length. Try trimming the document. </h3>")
-            else: 
-                response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
-                                max_output_tokens = st.session_state['token_limit'],
-                                top_p = st.session_state['top_p'],
-                                top_k = st.session_state['top_k'])
-                st.session_state['response'].append(response)
-                st.markdown(response)
-            
+        with st.spinner('The model is working on your summary...'):
+            with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
+                text = ""
+                for page in doc:
+                    text += page.get_text()
+                #st.write(text) 
+        #doc = fitz.open("pdf",uploaded_file)
+        #text =""
+        #for page_num in range (doc.page_count):
+        #    page = doc[page_num]
+        #    text += page.get_text()
+        #text = extract_text_from_pdf(uploaded_file)
 
+                
+                prompt = prompt_template.format(text=text)
+                #exception handling for length
+                if len(prompt) >= 26000:
+                    st.markdown("<h6 style='text-align: center; color: red;'>Document exceeds input token limit. Try trimming the document.</h3>", unsafe_allow_html=True)
+                else:
+                    st.markdown("<h3 style='text-align: center; color: red;'>Generator Model Response</h3>", unsafe_allow_html=True) 
+                    response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
+                                    max_output_tokens = st.session_state['token_limit'],
+                                    top_p = st.session_state['top_p'],
+                                    top_k = st.session_state['top_k'])
+                    st.session_state['response'].append(response)
+                    st.markdown(response)
+            
 
 
     #prompt = st.text_area("Add your prompt: ",height = 100)
