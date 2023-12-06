@@ -166,6 +166,7 @@ with st.container():
 
     uploaded_file = st.file_uploader("Choose a file", type='pdf')
     if uploaded_file:
+        st.balloons()
         st.markdown("<h3 style='text-align: center; color: red;'>Generator Model Response</h3>", unsafe_allow_html=True)
         #with st.spinner('Custom PaLM model is working to generate, wait.....'):
         with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
@@ -182,12 +183,16 @@ with st.container():
     #exception handling for length needed
             
             prompt = prompt_template.format(text=text)
-            response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
-                            max_output_tokens = st.session_state['token_limit'],
-                            top_p = st.session_state['top_p'],
-                            top_k = st.session_state['top_k'])
-            st.session_state['response'].append(response)
-            st.markdown(response) 
+            if len(prompt) >= 300000:
+                st.markdown("<h3 style='text-align: center; color: red;'>Document exceeds maximum token length. Try trimming the document. </h3>")
+            else: 
+                response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
+                                max_output_tokens = st.session_state['token_limit'],
+                                top_p = st.session_state['top_p'],
+                                top_k = st.session_state['top_k'])
+                st.session_state['response'].append(response)
+                st.markdown(response)
+            
 
 
 
