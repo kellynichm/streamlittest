@@ -72,12 +72,12 @@ def get_text_generation(prompt="",  **parameters):
 #main app function#
 
 st.set_page_config(
-    page_title="ASL Team 2 Custom PaLM Contract Summarizer",
+    page_title="ASL Team 2 PaLM (Base) Contract Summarizer",
     page_icon=":robot:",
     layout="centered",
     initial_sidebar_state="expanded",
     menu_items={
-        'About': "# This app uses a version of the Vertex PaLM model, fine-tuned on the Atticus Project Contract Understanding Atticus Dataset, to summarize contracts submitted as PDFs."
+        'About': "# This app uses the Vertex PaLM model to summarize contracts submitted as PDFs."
     }
 )
 
@@ -86,7 +86,7 @@ create_session_state()
 
 image = Image.open('./image/FairBanner.png')
 st.image(image)
-st.title(":red[ASL Team 2] PaLM 2 Contract Summarizer Demo")
+st.title(":red[ASL Team 2] PaLM 2 (Base) Contract Summarizer Demo")
 
 with st.sidebar:
     image = Image.open('./image/FairTab.png')
