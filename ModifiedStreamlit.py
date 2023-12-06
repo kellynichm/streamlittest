@@ -96,19 +96,19 @@ with st.sidebar:
     st.write("Model Settings:")
 
     #define the temeperature for the model
-    temperature_value = st.slider('Temperature :', 0.0, 1.0, 0.2)
+    temperature_value = st.slider('Temperature :', 0.0, 1.0, 0.0)
     st.session_state['temperature'] = temperature_value
 
     #define the temeperature for the model
-    token_limit_value = st.slider('Token limit :', 1, 1024, 256)
+    token_limit_value = st.slider('Token limit :', 1, 1024, 1024)
     st.session_state['token_limit'] = token_limit_value
 
     #define the temeperature for the model
-    top_k_value = st.slider('Top-K  :', 1,40,40)
+    top_k_value = st.slider('Top-K  :', 1,40,1)
     st.session_state['top_k'] = top_k_value
 
     #define the temeperature for the model
-    top_p_value = st.slider('Top-P :', 0.0, 1.0, 0.8)
+    top_p_value = st.slider('Top-P :', 0.0, 1.0, 0.1)
     st.session_state['top_p'] = top_p_value
 
     if st.button("Reset Session"):
@@ -180,6 +180,7 @@ with st.container():
     #    text += page.get_text()
     #text = extract_text_from_pdf(uploaded_file)
     #exception handling for length needed
+            
             prompt = prompt_template.format(text=text)
             response = get_text_generation(prompt=prompt, temperature = st.session_state['temperature'],
                             max_output_tokens = st.session_state['token_limit'],
