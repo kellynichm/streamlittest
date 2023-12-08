@@ -60,7 +60,7 @@ vertexai.init(project=PROJECT_ID, location=LOCATION)
 
 @st.cache_resource
 def get_model():
-    generation_model = TextGenerationModel.from_pretrained("text-bison@001")
+    generation_model = TextGenerationModel.from_pretrained("text-bison@002")
     return generation_model
 
 def get_text_generation(prompt="",  **parameters):
@@ -164,7 +164,7 @@ with st.container():
                 ," \t \t Debug Model: ",st.session_state['debug_mode'])
 
 
-    uploaded_file = st.file_uploader("Choose a file", type='pdf')
+    uploaded_file = st.file_uploader("Please upload a contract for summarization. Contracts should be in .pdf format and must be less than 25,000 characters. If your contract is longer, please submit it as parts.", type='pdf')
     if uploaded_file:
         st.balloons()
         with st.spinner('The model is working on your summary...'):
